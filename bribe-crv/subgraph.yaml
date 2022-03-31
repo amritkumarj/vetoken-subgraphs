@@ -1,0 +1,31 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Bribe
+    network: mainnet
+    source:
+      address: "0x7893bbb46613d7a4fbcc31dab4c9b823ffee1026"
+      abi: Bribe
+      startBlock: 13016019
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Gauge
+        - Vote
+        - Token
+      abis:
+        - name: Bribe
+          file: ./abis/Bribe.json
+        - name: ERC20
+          file: ./abis/erc20.json
+      callHandlers:
+        - function: claim_reward(address,address)
+          handler: handleClaim
+        - function: claim_reward(address,address,address)
+          handler: handleClaimWithUser
+
+      file: ./src/mapping.ts

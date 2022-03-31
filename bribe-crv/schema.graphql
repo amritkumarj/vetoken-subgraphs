@@ -1,0 +1,46 @@
+type Vote @entity {
+  " Transaction Hash "
+  id: ID!
+
+  user: String!
+
+  userBalance: BigInt!
+
+  gauge: Gauge!
+
+  rewardToken: Token!
+  
+  blockNumber: BigInt!
+
+  timestamp: BigInt!
+}
+type Token @entity{
+  " Token Address "
+  id: ID!
+
+  stats: [Stats!]! @derivedFrom(field: "token")
+}
+
+type Stats @entity{
+  id: ID!
+
+  weeklyClaimedRewards: BigInt!
+  
+  token: Token!
+
+  gauge: Gauge!
+
+  blockNumber: BigInt!
+
+  timestamp: BigInt!
+}
+
+type Gauge @entity{
+  " Gauge Address "
+  id: ID!
+
+  votes: [Vote!]! @derivedFrom(field: "gauge")
+
+  stats: [Stats!]! @derivedFrom(field: "gauge")
+  
+}
