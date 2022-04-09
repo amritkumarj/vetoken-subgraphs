@@ -22,10 +22,11 @@ dataSources:
           file: ./abis/Bribe.json
         - name: ERC20
           file: ./abis/erc20.json
+        - name: Gauge
+          file: ./abis/Gauge.json
       callHandlers:
         - function: claim_reward(address,address)
           handler: handleClaim
         - function: claim_reward(address,address,address)
           handler: handleClaimWithUser
-
       file: ./src/mapping.ts

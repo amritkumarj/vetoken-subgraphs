@@ -5,3 +5,5 @@ export const SECONDS_PER_WEEK = 60 * 60 * 24 * 7;
 
 export let BIGINT_ZERO = BigInt.fromI32(0);
 export const BIGDECIMAL_ZERO =new BigDecimal(BIGINT_ZERO)
+
+export const DEFAULT_DECIMALS = BigInt.fromI32(18)

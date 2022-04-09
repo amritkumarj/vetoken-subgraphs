@@ -14,14 +14,26 @@ type Vote @entity {
 
   timestamp: BigInt!
 }
+
 type Token @entity{
   " Token Address "
   id: ID!
 
-  stats: [Stats!]! @derivedFrom(field: "token")
+  stats: [Stat!]! @derivedFrom(field: "token")
+  
+  decimals: BigInt!
+
+  name: String!
+}
+type Week @entity{
+  id: ID!
+  blockNumber: BigInt!
+
+  timestamp: BigInt!
+  stats: [Stat!]! @derivedFrom(field: "week")
 }
 
-type Stats @entity{
+type Stat @entity{
   id: ID!
 
   weeklyClaimedRewards: BigInt!
@@ -33,14 +45,21 @@ type Stats @entity{
   blockNumber: BigInt!
 
   timestamp: BigInt!
+
+  totalUserBalance: BigInt!
+
+  week: Week!
+
 }
 
 type Gauge @entity{
   " Gauge Address "
   id: ID!
 
+  name: String!
+
   votes: [Vote!]! @derivedFrom(field: "gauge")
 
-  stats: [Stats!]! @derivedFrom(field: "gauge")
+  stats: [Stat!]! @derivedFrom(field: "gauge")
   
 }
