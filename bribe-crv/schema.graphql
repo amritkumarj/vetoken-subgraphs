@@ -58,6 +58,8 @@ type Gauge @entity{
 
   name: String!
 
+  symbol: String!
+
   votes: [Vote!]! @derivedFrom(field: "gauge")
 
   stats: [Stat!]! @derivedFrom(field: "gauge")

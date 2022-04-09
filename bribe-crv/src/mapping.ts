@@ -72,7 +72,7 @@ function getTokenDecimals(address: Address): BigInt{
     return decimals
 }
 
-function getTokenName(address: Address): String{
+function getTokenName(address: Address): string {
     const erc20Contract = ERC20.bind(address)
     const nameCall = erc20Contract.try_name()
     const name = nameCall.reverted ?'' : nameCall.value
@@ -85,6 +85,7 @@ function getOrCreateGauge(address: Address): Gauge{
     if(!gauge){
         gauge = new Gauge(id)
         gauge.name = getGaugeName(address)
+        gauge.symbol = getGaugeSymbol(address)
         gauge.save();
     }
     return gauge
@@ -97,8 +98,17 @@ function getGaugeName(address: Address): string{
         return lpToken.name()
     }
     return ''
-
 }
+function getGaugeSymbol(address: Address): string{
+    const gaugeContract = GaugeContract.bind(address)
+    const lpTokenAddress = gaugeContract.try_lp_token()
+    if(!lpTokenAddress.reverted){
+        const lpToken = ERC20.bind(lpTokenAddress.value)
+        return lpToken.symbol()
+    }
+    return ''
+}
+
 function getOrCreateToken(address: Address): Token{
     let id = address.toHexString()
     let token = Token.load(id)
