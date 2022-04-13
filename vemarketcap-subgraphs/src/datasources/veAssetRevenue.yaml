@@ -1,0 +1,24 @@
+  - kind: ethereum/contract
+    name: {name}
+    network: {network}
+    source:
+      abi: FeeDistributor
+      address: "{address}"
+      startBlock: {startBlock}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Token
+        - Protocol
+      abis:
+        - name: FeeDistributor
+          file: ../src/abis/FeeDistributor.json
+        - name: ERC20
+          file: ../src/abis/ERC20.json
+        - name: veAsset
+          file: ../src/abis/veAsset.json
+      eventHandlers:
+        - handler: handleClaimed
+          event: Claimed(indexed address,uint256,uint256,uint256)

@@ -1,0 +1,82 @@
+# Subgraph Schema: veAsset
+# Version: 0.0.1
+
+enum Network {
+  AVALANCHE
+  AURORA
+  BSC
+  CELO
+  CRONOS
+  ETHEREUM
+  FANTOM
+  HARMONY
+  MOONBEAM
+  MOONRIVER
+  OPTIMISM
+  POLYGON
+  XDAI
+}
+
+enum ProtocolType {
+  EXCHANGE
+  LENDING
+  YIELD
+  BRIDGE
+  GENERIC
+}
+
+type Token @entity {
+  id: ID!
+  name: String!
+  symbol: String!
+  decimals: Int!
+  totalSupply: BigInt!
+  balances: [TokenBalance!] @derivedFrom(field: "token")
+}
+
+type TokenBalance @entity {
+  id: ID!
+  address: String!
+  token: Token!
+  balance: BigInt!
+  lastUpdate: BigInt!
+}
+
+#############################
+#####      Protocol     #####
+#############################
+
+type Protocol @entity {
+  " Smart contract address of the protocol's veAsset "
+  id: ID!
+
+  # " Name of the protocol e.g. Pickle "
+  # name: String!
+
+  " protocol's fee distributor"
+  feeDistributor: String!
+
+  " protocol's token"
+  token: Token!
+
+  " protocol's veAsset"
+  veAsset: Token!
+
+  " # of total/cumulative unique users of veAsset "
+  totalHolderCount: Int!
+
+  " veAsset start time"
+  startTime: BigInt!
+
+  lastWeekRevenue: WeeklyRevenue
+  historicalWeeklyRevenue: [WeeklyRevenue!] @derivedFrom(field: "protocol")
+}
+
+type WeeklyRevenue @entity {
+  id: ID!
+  protocol: Protocol!
+  timestamp: BigInt!
+
+  " amount of protocol's token "
+  amount: BigInt!
+}

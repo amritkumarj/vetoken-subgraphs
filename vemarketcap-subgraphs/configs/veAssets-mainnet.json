@@ -1,0 +1,90 @@
+{
+  "output": "generated/veAssets.",
+  "network": "mainnet",
+  "datasources": [
+    {
+      "name": "veAsset",
+      "address": "0xdeaddeaddeaddeaddeaddeaddeaddeaddeaddead",
+      "startBlock": 14583800,
+      "module": ["veAsset"]
+    },
+    {
+      "name": "PickleRevenue",
+      "address": "0x74C6CadE3eF61d64dcc9b97490d9FbB231e4BdCc",
+      "startBlock": 12187101,
+      "module": ["veAssetRevenue"]
+    },
+    {
+      "name": "Pickle",
+      "address": "0xbBCf169eE191A1Ba7371F30A1C344bFC498b29Cf",
+      "startBlock": 11352928,
+      "module": ["veAsset"]
+    },
+    {
+      "name": "CurveRevenue",
+      "address": "0xA464e6DCda8AC41e03616F95f4BC98a13b8922Dc",
+      "startBlock": 11278886,
+      "module": ["veAssetRevenue"]
+    },
+    {
+      "name": "Curve",
+      "address": "0x5f3b5DfEb7B28CDbD7FAba78963EE202a494e2A2",
+      "startBlock": 10647812,
+      "module": ["veAsset"]
+    },
+    {
+      "name": "IDLERevenue",
+      "address": "0xbabb82456c013fd7e3f25857e0729de8207f80e2",
+      "startBlock": 12649361,
+      "module": ["veAssetRevenue"]
+    },
+    {
+      "name": "IDLE",
+      "address": "0xaac13a116ea7016689993193fce4badc8038136f",
+      "startBlock": 12561464,
+      "module": ["veAsset"]
+    },
+    {
+      "name": "Balancer",
+      "address": "0xC128a9954e6c874eA3d62ce62B468bA073093F25",
+      "startBlock": 14457013,
+      "module": ["veAsset"]
+    },
+    {
+      "name": "RibbonRevenue",
+      "address": "0x29893Bcd1fdA6da4f29D0e21edc55Abc3A29A202",
+      "startBlock": 14483800,
+      "module": ["veAssetRevenue"]
+    },
+    {
+      "name": "Ribbon",
+      "address": "0x19854c9a5ffa8116f48f984bdf946fb9cea9b5f7",
+      "startBlock": 14285043,
+      "module": ["veRBN"]
+    },
+    {
+      "name": "AngleRevenue",
+      "address": "0x7F82ff050128e29Fd89D85d01b93246F744E62A0",
+      "startBlock": 13983461,
+      "module": ["veAssetRevenue"]
+    },
+    {
+      "name": "Angle",
+      "address": "0x0C462Dbb9EC8cD1630f1728B2CFD2769d09f0dd5",
+      "startBlock": 13983399,
+      "module": ["veAsset"]
+    },
+    {
+      "name": "Frax",
+      "address": "0xc8418aF6358FFddA74e09Ca9CC3Fe03Ca6aDC5b0",
+      "startBlock": 12377613,
+      "module": ["veAsset"]
+    },
+    {
+      "name": "yAxis",
+      "address": "0x66b4c0daa0c65ed1eae84b4d738b9572a79389c4",
+      "startBlock": 13622260,
+      "module": ["veAsset"]
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "output": "generated/veAssets.",
+  "network": "fantom",
+  "datasources": [
+    {
+      "name": "veAsset",
+      "address": "0xdeaddeaddeaddeaddeaddeaddeaddeaddeaddead",
+      "startBlock": 35893136,
+      "module": ["veAsset"]
+    },
+    {
+      "name": "Creditum",
+      "address": "0xdB49A1190778623A872254ECca3a7bFD997223cb",
+      "startBlock": 30401579,
+      "module": ["veAsset"]
+    },
+    {
+      "name": "SpiritRevenue",
+      "address": "0x18CeF75C2b032D7060e9Cf96F29aDF74a9a17ce6",
+      "startBlock": 15545088,
+      "module": ["veAssetRevenue"]
+    },
+    {
+      "name": "Spirit",
+      "address": "0x2FBFf41a9efAEAE77538bd63f1ea489494acdc08",
+      "startBlock": 13691035,
+      "module": ["veAsset"]
+    },
+    {
+      "name": "LiquidDriveRevenue",
+      "address": "0x326236f487aC37Fc2CB69569b20173e9ccF639C9",
+      "startBlock": 34627402,
+      "module": ["veAssetRevenue"]
+    },
+    {
+      "name": "LiquidDrive",
+      "address": "0x3Ae658656d1C526144db371FaEf2Fff7170654eE",
+      "startBlock": 10447494,
+      "module": ["veAsset"]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "output": "generated/veAssets.",
+  "network": "avalanche",
+  "datasources": [
+    {
+      "name": "veAsset",
+      "address": "0xdeaddeaddeaddeaddeaddeaddeaddeaddeaddead",
+      "startBlock": 13330919,
+      "module": ["veAsset"]
+    },
+    {
+      "name": "SnowballRevenue",
+      "address": "0xad86ef5fd2ebc25bb9db41a1fe8d0f2a322c7839",
+      "startBlock": 2068310,
+      "module": ["veAssetRevenue"]
+    },
+    {
+      "name": "Snowball",
+      "address": "0x83952E7ab4aca74ca96217D6F8f7591BEaD6D64E",
+      "startBlock": 1714509,
+      "module": ["veAsset"]
+    },
+    {
+      "name": "Platypus",
+      "address": "0x5857019c749147EEE22b1Fe63500F237F3c1B692",
+      "startBlock": 9529902,
+      "module": ["veAsset"]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "name": "vemarketcap-subgraph",
+  "license": "UNLICENSED",
+  "scripts": {
+    "format": "npx prettier --write src/",
+    "lint": "eslint  src  --ext .ts,.tsx,.json --fix",
+    "codegen": "graph-compiler --config configs/veAssets-mainnet.json --include src/datasources/ --include src/templates/ --export-subgraph && cp src/schema.graphql generated/veAssets.schema.graphql && graph codegen generated/veAssets.subgraph.yaml",
+    "codegen-fantom": "graph-compiler --config configs/veAssets-fantom.json --include src/datasources/ --include src/templates/ --export-subgraph && cp src/schema.graphql generated/veAssets.schema.graphql && graph codegen generated/veAssets.subgraph.yaml",
+    "codegen-avalanche": "graph-compiler --config configs/veAssets-avalanche.json --include src/datasources/ --include src/templates/ --export-subgraph && cp src/schema.graphql generated/veAssets.schema.graphql && graph codegen generated/veAssets.subgraph.yaml",
+    "build": "yarn codegen && graph build generated/veAssets.subgraph.yaml",
+    "build-fantom": "yarn codegen-fantom && graph build generated/veAssets.subgraph.yaml",
+    "build-avalanche": "yarn codegen-avalanche && graph build generated/veAssets.subgraph.yaml",
+    "deploy": "graph deploy --product hosted-service vemarketcap/veMarketCap generated/veAssets.subgraph.yaml",
+    "deploy-fantom": "graph deploy --product hosted-service vemarketcap/veMarketCap-fantom generated/veAssets.subgraph.yaml",
+    "deploy-avalanche": "graph deploy --product hosted-service vemarketcap/veMarketCap-avalanche generated/veAssets.subgraph.yaml",
+    "create-local": "graph create --node http://localhost:8020/ vemarketcap/veMarketCap generated/veAssets.subgraph.yaml",
+    "remove-local": "graph remove --node http://localhost:8020/ vemarketcap/veMarketCap generated/veAssets.subgraph.yaml",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 vemarketcap/veMarketCap generated/veAssets.subgraph.yaml"
+  },
+  "dependencies": {
+    "@amxx/graphprotocol-utils": "^1.1.0-alpha.2",
+    "@graphprotocol/graph-cli": "^0.29.0",
+    "@graphprotocol/graph-ts": "^0.26.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.23",
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/parser": "^5.18.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^8.13.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "prettier": "2.6.1",
+    "typescript": "^4.6.3"
+  }
+}

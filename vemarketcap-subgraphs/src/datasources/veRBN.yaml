@@ -1,0 +1,24 @@
+  - kind: ethereum/contract
+    name: {name}
+    network: {network}
+    source:
+      abi: veRBN
+      address: "{address}"
+      startBlock: {startBlock}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: {file}
+      entities:
+        - TokenBalance
+      abis:
+        - name: FeeDistributor
+          file: ../src/abis/FeeDistributor.json
+        - name: veRBN
+          file: ../src/abis/veRBN.json
+        - name: ERC20
+          file: ../src/abis/ERC20.json
+      eventHandlers:
+        - handler: handleDeposit
+          event: Deposit(indexed address,indexed address,uint256,indexed uint256,int128,uint256)
