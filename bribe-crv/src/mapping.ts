@@ -11,6 +11,7 @@ import {
     Week
   } from "../generated/schema"
 import { BIGDECIMAL_ZERO, BIGINT_ZERO, DEFAULT_DECIMALS, SECONDS_PER_WEEK, veCRV_ADDRESS } from "./constants"
+import { normalizedUsdcPrice, usdcPrice } from "./price/usdcOracle"
 export function handleClaim(call: Claim_rewardCall): void {
     claim(call.from, call.inputs.gauge,call.inputs.reward_token, call.outputs.value0,call)
 }
@@ -49,11 +50,13 @@ function claim(userAddress: Address, gaugeAddress: Address, rewardTokenAddress: 
         stats.token = rewardToken.id
         stats.gauge = gauge.id
         stats.weeklyClaimedRewards = BIGINT_ZERO
+        stats.weeklyClaimedRewardUSD = BIGDECIMAL_ZERO
         stats.totalUserBalance = BIGINT_ZERO
         stats.week = week.id
     }
-
+    const amountUSD =  normalizedUsdcPrice(usdcPrice(rewardToken, amount))
     stats.weeklyClaimedRewards = stats.weeklyClaimedRewards.plus(amount)
+    stats.weeklyClaimedRewardUSD = stats.weeklyClaimedRewardUSD.plus(amountUSD)
     stats.totalUserBalance = stats.totalUserBalance.plus(userBalance)
     stats.blockNumber = call.block.number
     stats.timestamp = call.block.timestamp
@@ -64,19 +67,6 @@ function getVEBalance(address: Address): BigInt{
     const erc20Contract = ERC20.bind(veCRV_ADDRESS)
     const balance = erc20Contract.balanceOf(address)
     return balance
-}
-function getTokenDecimals(address: Address): BigInt{
-    const erc20Contract = ERC20.bind(address)
-    const decimalCall = erc20Contract.try_decimals()
-    const decimals = decimalCall.reverted ?DEFAULT_DECIMALS : BigInt.fromI32(decimalCall.value)
-    return decimals
-}
-
-function getTokenName(address: Address): string {
-    const erc20Contract = ERC20.bind(address)
-    const nameCall = erc20Contract.try_name()
-    const name = nameCall.reverted ?'' : nameCall.value
-    return name
 }
 
 function getOrCreateGauge(address: Address): Gauge{
@@ -113,9 +103,12 @@ function getOrCreateToken(address: Address): Token{
     let id = address.toHexString()
     let token = Token.load(id)
     if(!token){
+        const erc20Contract = ERC20.bind(address)
+        const decimalCall = erc20Contract.try_decimals()
+        const nameCall = erc20Contract.try_name()
         token = new Token(id)
-        token.decimals = getTokenDecimals(address)
-        token.name = getTokenName(address)
+        token.decimals = decimalCall.reverted ?DEFAULT_DECIMALS : decimalCall.value
+        token.name = nameCall.reverted ?'' : nameCall.value
         token.save();
     }
     return token

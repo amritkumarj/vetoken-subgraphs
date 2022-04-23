@@ -24,6 +24,12 @@ dataSources:
           file: ./abis/erc20.json
         - name: Gauge
           file: ./abis/Gauge.json
+        - name: Oracle
+          file: ./abis/Oracle.json
+        - name: CalculationsCurve
+          file: ./abis/CalculationsCurve.json
+        - name: CalculationsSushiSwap
+          file: ./abis/CalculationsSushiSwap.json
       callHandlers:
         - function: claim_reward(address,address)
           handler: handleClaim

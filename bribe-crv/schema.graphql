@@ -21,10 +21,11 @@ type Token @entity{
 
   stats: [Stat!]! @derivedFrom(field: "token")
   
-  decimals: BigInt!
+  decimals: Int!
 
   name: String!
 }
+
 type Week @entity{
   id: ID!
   blockNumber: BigInt!
@@ -37,6 +38,8 @@ type Stat @entity{
   id: ID!
 
   weeklyClaimedRewards: BigInt!
+
+  weeklyClaimedRewardUSD: BigDecimal!
   
   token: Token!
 
