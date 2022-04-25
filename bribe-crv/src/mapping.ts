@@ -106,9 +106,11 @@ function getOrCreateToken(address: Address): Token{
         const erc20Contract = ERC20.bind(address)
         const decimalCall = erc20Contract.try_decimals()
         const nameCall = erc20Contract.try_name()
+        const symbolCall = erc20Contract.try_symbol()
         token = new Token(id)
         token.decimals = decimalCall.reverted ?DEFAULT_DECIMALS : decimalCall.value
         token.name = nameCall.reverted ?'' : nameCall.value
+        token.symbol = symbolCall.reverted ?'' : symbolCall.value
         token.save();
     }
     return token

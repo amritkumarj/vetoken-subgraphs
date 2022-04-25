@@ -24,6 +24,8 @@ type Token @entity{
   decimals: Int!
 
   name: String!
+
+  symbol: String!
 }
 
 type Week @entity{
