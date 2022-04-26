@@ -1,10 +1,11 @@
 import { BigInt, Address, ethereum} from "@graphprotocol/graph-ts"
-import { Claim_reward1Call, Claim_rewardCall } from "../generated/Bribe/Bribe"
+import { Add_reward_amountCall, Claim_reward1Call, Claim_rewardCall } from "../generated/Bribe/Bribe"
 import { ERC20 } from "../generated/Bribe/ERC20"
 import { Gauge as GaugeContract } from "../generated/Bribe/Gauge"
 
 import {
     Gauge,
+    Reward,
     Stat,
     Token,
     Vote,
@@ -19,6 +20,23 @@ export function handleClaim(call: Claim_rewardCall): void {
 export function handleClaimWithUser(call: Claim_reward1Call): void{
     claim(call.inputs.user, call.inputs.gauge,call.inputs.reward_token, call.outputs.value0,call)
 }
+
+export function handleReward(call: Add_reward_amountCall): void{
+    if(call.outputs.value0){
+        const rewardToken = getOrCreateToken(call.inputs.reward_token)
+        const gauge = getOrCreateGauge(call.inputs.gauge)
+        const reward = new Reward(call.transaction.hash.toHexString())
+        reward.blockNumber = call.block.number
+        reward.timestamp = call.block.timestamp
+        reward.gauge = gauge.id
+        reward.rewardToken = rewardToken.id
+        const amount = call.inputs.amount
+        reward.amount = amount
+        reward.amountUSD =  normalizedUsdcPrice(usdcPrice(rewardToken, amount))
+        reward.save()
+    }
+}
+
 
 function claim(userAddress: Address, gaugeAddress: Address, rewardTokenAddress: Address,amount: BigInt, call: ethereum.Call): void{
     const gauge = getOrCreateGauge(gaugeAddress);

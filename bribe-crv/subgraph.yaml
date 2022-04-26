@@ -35,4 +35,6 @@ dataSources:
           handler: handleClaim
         - function: claim_reward(address,address,address)
           handler: handleClaimWithUser
+        - function: add_reward_amount(address,address,uint256)
+          handler: handleReward
       file: ./src/mapping.ts

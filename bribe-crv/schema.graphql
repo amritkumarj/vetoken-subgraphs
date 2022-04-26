@@ -70,3 +70,19 @@ type Gauge @entity{
   stats: [Stat!]! @derivedFrom(field: "gauge")
   
 }
+
+type Reward @entity{
+  id: ID!
+  
+  gauge: Gauge!
+
+  rewardToken: Token!
+
+  amount: BigInt!
+
+  amountUSD: BigDecimal!
+
+  blockNumber: BigInt!
+
+  timestamp: BigInt!
+}
