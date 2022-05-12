@@ -13,6 +13,13 @@ type Vote @entity {
   blockNumber: BigInt!
 
   timestamp: BigInt!
+
+  rewardAmount: BigInt!
+
+  rewardAmountUSD: BigDecimal!
+
+  tokenPrice: BigDecimal!
+
 }
 
 type Token @entity{
@@ -54,7 +61,6 @@ type Stat @entity{
   totalUserBalance: BigInt!
 
   week: Week!
-
 }
 
 type Gauge @entity{
@@ -68,7 +74,6 @@ type Gauge @entity{
   votes: [Vote!]! @derivedFrom(field: "gauge")
 
   stats: [Stat!]! @derivedFrom(field: "gauge")
-  
 }
 
 type Reward @entity{

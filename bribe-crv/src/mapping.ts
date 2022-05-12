@@ -1,4 +1,4 @@
-import { BigInt, Address, ethereum} from "@graphprotocol/graph-ts"
+import { BigInt, Address, ethereum, BigDecimal} from "@graphprotocol/graph-ts"
 import { Add_reward_amountCall, Claim_reward1Call, Claim_rewardCall } from "../generated/Bribe/Bribe"
 import { ERC20 } from "../generated/Bribe/ERC20"
 import { Gauge as GaugeContract } from "../generated/Bribe/Gauge"
@@ -11,8 +11,9 @@ import {
     Vote,
     Week
   } from "../generated/schema"
-import { BIGDECIMAL_ZERO, BIGINT_ZERO, DEFAULT_DECIMALS, SECONDS_PER_WEEK, veCRV_ADDRESS } from "./constants"
+import { BIGDECIMAL_ONE, BIGDECIMAL_ZERO, BIGINT_ONE, BIGINT_TEN, BIGINT_ZERO, DEFAULT_DECIMALS, SECONDS_PER_WEEK, veCRV_ADDRESS } from "./constants"
 import { normalizedUsdcPrice, usdcPrice } from "./price/usdcOracle"
+import { getUsdPrice } from "./prices"
 export function handleClaim(call: Claim_rewardCall): void {
     claim(call.from, call.inputs.gauge,call.inputs.reward_token, call.outputs.value0,call)
 }
@@ -32,7 +33,8 @@ export function handleReward(call: Add_reward_amountCall): void{
         reward.rewardToken = rewardToken.id
         const amount = call.inputs.amount
         reward.amount = amount
-        reward.amountUSD =  normalizedUsdcPrice(usdcPrice(rewardToken, amount))
+        reward.amountUSD = getUsdPrice(Address.fromString(rewardToken.id), new BigDecimal(amount));
+
         reward.save()
     }
 }
@@ -43,6 +45,11 @@ function claim(userAddress: Address, gaugeAddress: Address, rewardTokenAddress: 
     const rewardToken = getOrCreateToken(rewardTokenAddress);
     let id = call.block.timestamp.toI64() / SECONDS_PER_WEEK;
     const userBalance = getVEBalance(userAddress)
+    const decimals = BIGINT_TEN.pow(u8(rewardToken.decimals))
+    // const tokenPrice =  normalizedUsdcPrice(usdcPrice(rewardToken, decimals))
+    const tokenPrice = getUsdPrice(Address.fromString(rewardToken.id), BIGDECIMAL_ONE);
+
+    const amountUSD =  tokenPrice.times(new BigDecimal(amount.div(decimals)))
 
     const vote = new Vote("vote-" + call.transaction.hash.toHexString())
     vote.blockNumber = call.block.number
@@ -51,6 +58,10 @@ function claim(userAddress: Address, gaugeAddress: Address, rewardTokenAddress: 
     vote.rewardToken = rewardToken.id
     vote.user = userAddress.toHexString()
     vote.userBalance = userBalance
+    vote.rewardAmount = amount
+    vote.rewardAmountUSD = amountUSD
+    vote.tokenPrice = tokenPrice
+
     vote.save()
 
     let week = Week.load(id.toString())
@@ -72,7 +83,6 @@ function claim(userAddress: Address, gaugeAddress: Address, rewardTokenAddress: 
         stats.totalUserBalance = BIGINT_ZERO
         stats.week = week.id
     }
-    const amountUSD =  normalizedUsdcPrice(usdcPrice(rewardToken, amount))
     stats.weeklyClaimedRewards = stats.weeklyClaimedRewards.plus(amount)
     stats.weeklyClaimedRewardUSD = stats.weeklyClaimedRewardUSD.plus(amountUSD)
     stats.totalUserBalance = stats.totalUserBalance.plus(userBalance)

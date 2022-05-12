@@ -4,7 +4,10 @@ export const veCRV_ADDRESS: Address = Address.fromString('0x5f3b5dfeb7b28cdbd7fa
 export const SECONDS_PER_WEEK = 60 * 60 * 24 * 7;
 
 export let BIGINT_ZERO = BigInt.fromI32(0);
+export let BIGINT_ONE = BigInt.fromI32(1);
+export let BIGINT_TEN = BigInt.fromI32(10);
 export const BIGDECIMAL_ZERO =new BigDecimal(BIGINT_ZERO)
+export const BIGDECIMAL_ONE =new BigDecimal(BIGINT_ONE)
 
 export const DEFAULT_DECIMALS = 18
 
@@ -19,5 +22,3 @@ export const ETH_MAINNET_CALCULATIONS_CURVE_ADDRESS = "0x25BF7b72815476Dd515044F
 export const ETH_MAINNET_CALCULATIONS_SUSHI_SWAP_ADDRESS = "0x8263e161A855B644f582d9C164C66aABEe53f927";
 
 export const ETH_MAINNET_MANAGER_ADDRESS = "0xA86e412109f77c45a3BC1c5870b880492Fb86A14";
-export let BIGINT_ONE = BigInt.fromI32(1);
-export let BIGINT_TEN = BigInt.fromI32(10);
