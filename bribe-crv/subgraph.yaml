@@ -26,12 +26,8 @@ dataSources:
           file: ./abis/Gauge.json
         - name: Oracle
           file: ./abis/Oracle.json
-        - name: CalculationsCurve
-          file: ./abis/CalculationsCurve.json
-        - name: CalculationsSushiSwap
-          file: ./abis/CalculationsSushiSwap.json
-
-          
+        
+        ### PRICE ABI ###
         - name: _ERC20
           file: ./abis/Prices/ERC20.json
         # Curve Contracts

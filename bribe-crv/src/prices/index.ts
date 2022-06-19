@@ -17,15 +17,16 @@ export function getUsdPricePerToken(tokenAddr: Address): CustomPriceType {
 
   let network = dataSource.network();
 
-  // 1. Yearn Lens Oracle
-  let yearnLensPrice = getTokenPriceFromYearnLens(tokenAddr, network);
-  if (!yearnLensPrice.reverted) {
-    log.warning("[YearnLensOracle] tokenAddress: {}, Price: {}", [
+  // 3. CalculationsCurve
+  let calculationsCurvePrice = getTokenPriceFromCalculationCurve(tokenAddr, network);
+  if (!calculationsCurvePrice.reverted) {
+    log.warning("[CalculationsCurve] tokenAddress: {}, Price: {}", [
       tokenAddr.toHexString(),
-      yearnLensPrice.usdPrice.div(yearnLensPrice.decimalsBaseTen).toString(),
+      calculationsCurvePrice.usdPrice.div(calculationsCurvePrice.decimalsBaseTen).toString(),
     ]);
-    return yearnLensPrice;
+    return calculationsCurvePrice;
   }
+
 
   // 2. ChainLink Feed Registry
   let chainLinkPrice = getTokenPriceFromChainLink(tokenAddr, network);
@@ -37,15 +38,6 @@ export function getUsdPricePerToken(tokenAddr: Address): CustomPriceType {
     return chainLinkPrice;
   }
 
-  // 3. CalculationsCurve
-  let calculationsCurvePrice = getTokenPriceFromCalculationCurve(tokenAddr, network);
-  if (!calculationsCurvePrice.reverted) {
-    log.warning("[CalculationsCurve] tokenAddress: {}, Price: {}", [
-      tokenAddr.toHexString(),
-      calculationsCurvePrice.usdPrice.div(calculationsCurvePrice.decimalsBaseTen).toString(),
-    ]);
-    return calculationsCurvePrice;
-  }
 
   // 4. CalculationsSushiSwap
   let calculationsSushiSwapPrice = getTokenPriceFromSushiSwap(tokenAddr, network);
@@ -87,6 +79,17 @@ export function getUsdPricePerToken(tokenAddr: Address): CustomPriceType {
     return sushiswapPrice;
   }
 
+  
+  // 1. Yearn Lens Oracle
+  let yearnLensPrice = getTokenPriceFromYearnLens(tokenAddr, network);
+  if (!yearnLensPrice.reverted) {
+    log.warning("[YearnLensOracle] tokenAddress: {}, Price: {}", [
+      tokenAddr.toHexString(),
+      yearnLensPrice.usdPrice.div(yearnLensPrice.decimalsBaseTen).toString(),
+    ]);
+    return yearnLensPrice;
+  }
+  
   log.warning("[Oracle] Failed to Fetch Price, tokenAddr: {}", [tokenAddr.toHexString()]);
 
   return new CustomPriceType();

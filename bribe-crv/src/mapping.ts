@@ -12,7 +12,6 @@ import {
     Week
   } from "../generated/schema"
 import { BIGDECIMAL_ONE, BIGDECIMAL_ZERO, BIGINT_ONE, BIGINT_TEN, BIGINT_ZERO, DEFAULT_DECIMALS, SECONDS_PER_WEEK, veCRV_ADDRESS } from "./constants"
-import { normalizedUsdcPrice, usdcPrice } from "./price/usdcOracle"
 import { getUsdPrice } from "./prices"
 export function handleClaim(call: Claim_rewardCall): void {
     claim(call.from, call.inputs.gauge,call.inputs.reward_token, call.outputs.value0,call)
@@ -25,15 +24,22 @@ export function handleClaimWithUser(call: Claim_reward1Call): void{
 export function handleReward(call: Add_reward_amountCall): void{
     if(call.outputs.value0){
         const rewardToken = getOrCreateToken(call.inputs.reward_token)
+        const decimals = BIGINT_TEN.pow(u8(rewardToken.decimals))
+
         const gauge = getOrCreateGauge(call.inputs.gauge)
         const reward = new Reward(call.transaction.hash.toHexString())
+
         reward.blockNumber = call.block.number
         reward.timestamp = call.block.timestamp
         reward.gauge = gauge.id
         reward.rewardToken = rewardToken.id
         const amount = call.inputs.amount
+
         reward.amount = amount
-        reward.amountUSD = getUsdPrice(Address.fromString(rewardToken.id), new BigDecimal(amount));
+        const tokenPrice = getUsdPrice(Address.fromString(rewardToken.id), BIGDECIMAL_ONE);
+        const amountUSD =  tokenPrice.times(new BigDecimal(amount.div(decimals)))
+
+        reward.amountUSD = amountUSD;
 
         reward.save()
     }
@@ -46,7 +52,6 @@ function claim(userAddress: Address, gaugeAddress: Address, rewardTokenAddress: 
     let id = call.block.timestamp.toI64() / SECONDS_PER_WEEK;
     const userBalance = getVEBalance(userAddress)
     const decimals = BIGINT_TEN.pow(u8(rewardToken.decimals))
-    // const tokenPrice =  normalizedUsdcPrice(usdcPrice(rewardToken, decimals))
     const tokenPrice = getUsdPrice(Address.fromString(rewardToken.id), BIGDECIMAL_ONE);
 
     const amountUSD =  tokenPrice.times(new BigDecimal(amount.div(decimals)))

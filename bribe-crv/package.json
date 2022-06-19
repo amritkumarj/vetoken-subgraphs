@@ -7,10 +7,11 @@
     "deploy": "graph deploy jaqensyrio/bribecrv --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
     "create-local": "graph create --node http://localhost:8020/ bribe-crv",
     "remove-local": "graph remove --node http://localhost:8020/ bribe-crv",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 bribe-crv"
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 bribe-crv",
+    "deploy-local-fork": "graph deploy bribe-crv --debug-fork QmNZW9fRMmSzxsAdGbmtAVkaRGgELyjZbSKfNHf3FfxeRb --ipfs http://localhost:5001 --node http://localhost:8020"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.26.0",
-    "@graphprotocol/graph-ts": "0.24.1"
+    "@graphprotocol/graph-cli": "0.29.2",
+    "@graphprotocol/graph-ts": "0.25.0"
   }
 }
