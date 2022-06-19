@@ -17,7 +17,7 @@ export function getUsdPricePerToken(tokenAddr: Address): CustomPriceType {
 
   let network = dataSource.network();
 
-  // 3. CalculationsCurve
+  // 1. CalculationsCurve
   let calculationsCurvePrice = getTokenPriceFromCalculationCurve(tokenAddr, network);
   if (!calculationsCurvePrice.reverted) {
     log.warning("[CalculationsCurve] tokenAddress: {}, Price: {}", [
@@ -80,7 +80,7 @@ export function getUsdPricePerToken(tokenAddr: Address): CustomPriceType {
   }
 
   
-  // 1. Yearn Lens Oracle
+  // 8. Yearn Lens Oracle
   let yearnLensPrice = getTokenPriceFromYearnLens(tokenAddr, network);
   if (!yearnLensPrice.reverted) {
     log.warning("[YearnLensOracle] tokenAddress: {}, Price: {}", [
